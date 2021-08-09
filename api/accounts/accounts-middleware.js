@@ -21,9 +21,6 @@ exports.checkAccountPayload = async (req, res, next) => {
   // DO YOUR MAGIC
 };
 
-exports.checkAccountNameUnique = (req, res, next) => {
-
-};
 
 exports.checkAccountId = async (req, res, next) => {
   try {
@@ -40,3 +37,11 @@ exports.checkAccountId = async (req, res, next) => {
     next();
   }
 };
+
+exports.checkAccountNameUnique = (req, res, next) => {
+// try{
+// const 
+// }
+// catch{
+
+}

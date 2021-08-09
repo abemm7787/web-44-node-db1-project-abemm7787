@@ -31,12 +31,24 @@ res.json(req.accountId)
 
 
 
-router.post("/", (req, res, next) => {
+router.post("/", async (req, res, next) => {
+try{
+ Codes.create(req.body)
+ .then((accounts) => {
+  res.status(200).json(accounts)
+})
+}
+catch{
+
+  next()
+
+}
+})
+
 
   // Codes.insert().
   
 
-});
 
 router.put("/:id", (req, res, next) => {
   // DO YOUR MAGIC

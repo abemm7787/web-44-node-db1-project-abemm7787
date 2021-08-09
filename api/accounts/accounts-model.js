@@ -9,11 +9,19 @@ async function getById(id){
 }
 
 
+async function create(account){
 
 
-const create = account => {
+  const stuff = await db("accounts").insert(account)
 
-  return db("accounts").insert(account)
+  console.log(stuff)
+
+// const [id] = await db("accounts").insert({account})
+
+//   return await db("accounts").insert(account).last()
+//   console.log()
+
+return "create wired"
 
 }
 
