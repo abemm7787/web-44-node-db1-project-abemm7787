@@ -12,16 +12,18 @@ async function getById(id){
 async function create(account){
 
 
-  const stuff = await db("accounts").insert(account)
+  //const stuff = await db("accounts").insert(account)
 
-  console.log(stuff)
+  //console.log(stuff)
 
-// const [id] = await db("accounts").insert({account})
+const [id] = await db("accounts").insert(account)
 
 //   return await db("accounts").insert(account).last()
-//   console.log()
-
-return "create wired"
+   console.log(id)
+   const accounts = await getById(id)
+   console.log(accounts) // dont be that guy, no assumptions
+return "gwen"
+//return "create wired"
 
 }
 
