@@ -1,39 +1,27 @@
-const db = require("../../data/db-config")
+const db = require('../../data/db-config');
 
 const getAll = () => {
-  return db("accounts")
+  // select * from accounts
+  return db('accounts');
 }
 
-async function getById(id){
-  return await db("accounts").where("id",id ).first();
+const getById = id => {
+  // select * from accounts where id = 1;
+  return db('accounts').where('id', id).first()
 }
 
-// looking for subcatergories in the database, therefore...
-
-async function create(account){
-//const stuff = await db("accounts").insert(account)
-//console.log(stuff)
- // return await db("accounts").insert(account).last()
-// console.log(id)
-//return "create wired"
-const [id] = await db("accounts").insert({
-name: account.name.trim(),
-budget: account.budget, })
-const accounts = await getById(id)
-//console.log(accounts) // dont be that guy, no assumptions
-//return "gwen"
-return accounts
-
+const create = async account => {
+  const [id] = await db('accounts').insert(account)
+  return getById(id)
 }
 
-const updateById = (id, account) => {
-
-return db("accounts").where({ id:id, account: account})
-
+const updateById = async (id, account) => {
+  await db('accounts').where('id', id).update(account)
+  return getById(id)
 }
 
 const deleteById = id => {
-return db("a")
+  return db('accounts').where('id', id).del()
 }
 
 module.exports = {

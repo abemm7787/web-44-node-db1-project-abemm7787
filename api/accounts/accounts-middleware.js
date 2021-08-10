@@ -1,58 +1,66 @@
-const Updates = require("./accounts-model");
+const Account = require('./accounts-model');
+const db = require('../../data/db-config')
 
-// - Find all customers with postal code 1010. Returns 3 records.
+exports.checkAccountPayload = (req, res, next) => {
+// error status 
+  const error = { status: 400 }
+  const {name, budget} = req.body
+const  servererror = {status:500}
 
-
-//   - `checkAccountPayload` returns a status 400 with if `req.body` is invalid:
-
-
-
-exports.checkAccountPayload = async (req, res, next) => {
-  
-
-  
-  try {
-    const { name, budget} = req.body
-    // const accounts = req.params.body;
-    // const checkaccounts = await Updates.getAll(accounts);
-   
-    if (!name || !budget) {
-    
-   req.status(400).json({ message: "name of account must be a string" });
-  //
-    } 
-    else {
-      res.status(200)
-      .json({ message: `you have made a request for ${checkpostal}` });
-    }
-  } catch {
-    res.status(500).json({ message: `not found` });
+  if (name === undefined || budget === undefined) {
+    error.message = 'name and budget are required' 
+  } 
+  else if (typeof name !== 'string') {
+    error.message = 'name of account must be a string'
+  } else if (name.trim().length < 3 || name.trim().length > 100) {
+    error.message = 'name of account must be between 3 and 100'
+  } else if (typeof budget !== 'number' || isNaN(budget)) {
+    error.message = 'budget of account must be a number'    
+  } else if (budget < 0 || budget > 1000000) {
+    error.message = 'budget of account is too large or too small'
   }
 
-  // DO YOUR MAGIC
-};
+  if (error.message) {
+    next(error)
+  } else {
+    servererror
+    next()
+  }
+}
 
+exports.checkAccountNameUnique = async (req, res, next) => {
+  try {
+    // console.log("checkAccountNameUnique middleware  ")
+
+
+    const existing = await db('accounts')
+      .where('name', req.body.name.trim())
+      .first()
+    if (existing) {
+      next({ status: 400, message: 'that name is taken' })
+    } else {
+   
+      next()
+    }
+  } catch (err) {
+ 
+    next(err)
+  }
+}
 
 exports.checkAccountId = async (req, res, next) => {
   try {
-  
-    const accountsId = await Updates.getById(req.params.id);
-    if (!accountsId) 
-    res.status(404).json({ message: "account not found"});
-    else {
-    
-      req.account = accountsId;
+    console.log("checkAccountNameUnique middleware ")
+
+    const account = await Account.getById(req.params.id)
+    if (!account) {
+      next({ status: 404, message: 'account not found'})
+    } else {
+      req.account = account
+      next()
     }
-    next();
-  } catch {
-    next();
+  } catch (err) {
+
+    next(err)
   }
-};
-
-exports.checkAccountNameUnique = (req, res, next) => {
-// try{
-// const 
-// }
-// catch{
-
 }
