@@ -8,22 +8,21 @@ async function getById(id){
   return await db("accounts").where("id",id ).first();
 }
 
+// looking for subcatergories in the database, therefore...
 
 async function create(account){
-
-
-  //const stuff = await db("accounts").insert(account)
-
-  //console.log(stuff)
-
-const [id] = await db("accounts").insert(account)
-
-//   return await db("accounts").insert(account).last()
-   console.log(id)
-   const accounts = await getById(id)
-   console.log(accounts) // dont be that guy, no assumptions
-return "gwen"
+//const stuff = await db("accounts").insert(account)
+//console.log(stuff)
+ // return await db("accounts").insert(account).last()
+// console.log(id)
 //return "create wired"
+const [id] = await db("accounts").insert({
+name: account.name.trim(),
+budget: account.budget, })
+const accounts = await getById(id)
+//console.log(accounts) // dont be that guy, no assumptions
+//return "gwen"
+return accounts
 
 }
 

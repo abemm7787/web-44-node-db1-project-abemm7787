@@ -2,15 +2,26 @@ const Updates = require("./accounts-model");
 
 // - Find all customers with postal code 1010. Returns 3 records.
 
+
+//   - `checkAccountPayload` returns a status 400 with if `req.body` is invalid:
+
+
+
 exports.checkAccountPayload = async (req, res, next) => {
-  try {
-    const accounts = req.params.body;
-    const checkpostal = await Updates.getAll(accounts);
-    if (!checkpostal) {
-      req.body = checkpostal;
-      req.status(404).json({ message: `missing inquires ` });
   
-    } else {
+
+  
+  try {
+    const { name, budget} = req.body
+    // const accounts = req.params.body;
+    // const checkaccounts = await Updates.getAll(accounts);
+   
+    if (!name || !budget) {
+    
+   req.status(400).json({ message: "name of account must be a string" });
+  //
+    } 
+    else {
       res.status(200)
       .json({ message: `you have made a request for ${checkpostal}` });
     }
